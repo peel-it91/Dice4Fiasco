@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice for Fiasco</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .dice {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            border: 1px solid black;
+            line-height: 50px;
+            text-align: center;
+            font-size: 20px;
+            border-radius: 5px;
+            user-select: none;
+        }
+        .white-dice {
+            background-color: white;
+            color: black;
+        }
+        .black-dice {
+            background-color: black;
+            color: white;
+        }
+        .container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        #top-dice-container {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .notice-box {
+            width: 100%;
+            background-color: lightgray;
+            color: black; 
+            text-align: left;
+            padding: 15px;
+            border-top: 3px solid gray;
+            box-sizing: border-box;
+        }
+        .footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Dice for Fiasco</h1>
+    <pr>The description is at the bottom of the page.<br>
+        Remember: DO NOT refresh!
+    </pr>
+
+    <div id="top-dice-container">
+        <div id="top-dice" class="dice white-dice">0</div><br>
+        <button onclick="changeTopDiceColor()">Change Color</button>
+        <button onclick="rollTopDice()">Roll</button>
+    </div>
+
+    <div class="container">
+        <h2>White Dice: <span id="whiteDiceCount">0</span></h2>
+        <button onclick="changeDiceCount('white', 1)">White +</button>
+        <div id="whiteDiceContainer"></div>
+        <button onclick="changeDiceCount('white', -1)">White -</button><br><br>
+        <button onclick="rollDice('white')">Roll White Dice</button>  
+    </div>
+    
+    <div class="container">
+        <h2>Black Dice: <span id="blackDiceCount">0</span></h2>
+        <button onclick="changeDiceCount('black', 1)">Black +</button>
+        <div id="blackDiceContainer"></div>
+        <button onclick="changeDiceCount('black', -1)">Black -</button><br><br>
+        <button onclick="rollDice('black')">Roll Black Dice</button>
+    </div>
+
+    <div class="notice-box">
+        <p style="font-weight:900">Get ready to play...</p>
+        1. this page is for single player, not multiplayer. <br>
+        2. So, to start the game, you'll need one more digital device than the number of players.<br>
+        3. Open this page on all of the prepared digital devices, and place the device with the largest screen in the center of the table.<br>
+        Every player must have one digital device with this page open.<br>
+        <br>
+        <p style="font-weight:900">During the game...</p>
+        1. the values of the dice are all randomized, trust us.<br>
+        2. Press and hold on a specific dice to remove it from the list.<br>
+        3. press the + button to add a new dice to the far right of the dice list. A 0 means you haven't rolled that dice yet.<br>
+        3. press the - button to delete the rightmost dice.<br>
+        4. Each time you take a dice from the center, press firmly to remove it from the device in the center
+        and add it to your own device.<br>
+        <br>
+        <p style="font-weight:900">When the curtain falls...</p>
+        1. roll the white and black dice... and then... well, you know what happens after that.
+        There's no automatic summation. Go for it, use your brain!<br>
+        <br>
+        <p style="font-weight:900">Remember: Don't close the tab while the game is in progress.
+            Refreshing or reopening the page will reset everything, including the number of dice.
+            </p>
+        <br>
+    </div>
+
+    <div class="footer">
+        © 2025 peel-it91. All rights reserved. | contact : 203771108+peel-it91@users.noreply.github.com
+    </div>
+
+    <script>
+        function rollTopDice() {
+            const diceRoll = Math.floor(Math.random() * 6) + 1;
+            document.getElementById("top-dice").textContent = diceRoll;
+        }
+
+        function changeTopDiceColor() {
+            const topDice = document.getElementById("top-dice");
+            topDice.classList.toggle("white-dice");
+            topDice.classList.toggle("black-dice");
+        }
+
+        let whiteDice = 0;
+        let blackDice = 0;
+
+        function changeDiceCount(color, change) {
+            if (color === 'white' && whiteDice + change >= 0) {
+                whiteDice += change;
+                document.getElementById("whiteDiceCount").textContent = whiteDice;
+                if (change > 0) addNewDice('white');
+                else removeLastDice('white');
+            } else if (color === 'black' && blackDice + change >= 0) {
+                blackDice += change;
+                document.getElementById("blackDiceCount").textContent = blackDice;
+                if (change > 0) addNewDice('black');
+                else removeLastDice('black');
+            }
+        }
+
+        function addNewDice(color) {
+            const diceContainer = document.getElementById(color + "DiceContainer");
+            const diceElement = document.createElement("div");
+            diceElement.classList.add("dice", color + "-dice");
+            diceElement.textContent = "0";
+            addDiceEventListeners(diceElement, color);
+            diceContainer.appendChild(diceElement);
+        }
+
+        function removeLastDice(color) {
+            const diceContainer = document.getElementById(color + "DiceContainer");
+            if (diceContainer.children.length > 0) {
+                diceContainer.removeChild(diceContainer.lastChild);
+            }
+        }
+
+        function rollDice(color) {
+            const diceContainer = document.getElementById(color + "DiceContainer");
+            const diceElements = [...diceContainer.children];
+            let values = diceElements.map(() => Math.floor(Math.random() * 6) + 1);
+            values.sort((a, b) => a - b);
+            diceElements.forEach((diceElement, index) => {
+                diceElement.textContent = values[index];
+            });
+        }
+
+        function addDiceEventListeners(diceElement, color) {
+            let pressTimer;
+            diceElement.addEventListener("mousedown", function() {
+                pressTimer = setTimeout(() => confirmRemoveDice(color, diceElement), 500);
+            });
+            
+            diceElement.addEventListener("mouseup", function() {
+                clearTimeout(pressTimer);
+            });
+            
+            diceElement.addEventListener("mouseleave", function() {
+                clearTimeout(pressTimer);
+            });
+        }
+
+        function confirmRemoveDice(color, diceElement) {
+            if (confirm("Edit this Dice")) {
+                removeDice(color, diceElement);
+            }
+        }
+
+       function removeDice(color, diceElement) {
+            diceElement.remove();
+            if (color === 'white' && whiteDice > 0) {
+                whiteDice--;
+                document.getElementById("whiteDiceCount").textContent = whiteDice;
+            } else if (color === 'black' && blackDice > 0) {
+                blackDice--;
+                document.getElementById("blackDiceCount").textContent = blackDice;
+            }
+        }
+    </script>
+</body>
+</html>
