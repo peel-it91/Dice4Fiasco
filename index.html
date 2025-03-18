@@ -45,6 +45,7 @@
             border-top: 3px solid gray;
             box-sizing: border-box;
         }
+
     </style>
 </head>
 <body>
@@ -157,17 +158,20 @@
 
         function addDiceEventListeners(diceElement, color) {
             let pressTimer;
+
+            diceElement.addEventListener("touchstart", function() {
+                pressTimer = setTimeout(() => confirmRemoveDice(color, diceElement), 500);});
+            diceElement.addEventListener("touchend", function() {
+                clearTimeout(pressTimer);});
+            diceElement.addEventListener("touchmove", function() {
+                clearTimeout(pressTimer);});
+
             diceElement.addEventListener("mousedown", function() {
-                pressTimer = setTimeout(() => confirmRemoveDice(color, diceElement), 500);
-            });
-            
+                pressTimer = setTimeout(() => confirmRemoveDice(color, diceElement), 500);});
             diceElement.addEventListener("mouseup", function() {
-                clearTimeout(pressTimer);
-            });
-            
+                clearTimeout(pressTimer);});
             diceElement.addEventListener("mouseleave", function() {
-                clearTimeout(pressTimer);
-            });
+                clearTimeout(pressTimer);});
         }
 
         function confirmRemoveDice(color, diceElement) {
