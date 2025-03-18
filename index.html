@@ -80,22 +80,21 @@
         <p style="font-weight:700">Get ready to play...</p>
         1. This page is for single player, not multiplayer. <br>
         2. So, to start the game, you'll need one more digital device than the number of players.<br>
-        3. Open this page on all of the prepared digital devices, and place the device with the largest screen in the center of the table.<br>
+        3. Open this page on all of the prepared digital devices, and place the device with the largest screen in the center of the table.
         Every player must have one digital device with this page open.<br>
         <br>
         <p style="font-weight:700">During the game...</p>
-        1. The values of the dice are all randomized, trust us.<br>
-        2. Press and hold on a specific dice to remove it from the list.<br>
-        3. press the + button to add a new dice to the far right of the dice list. A 0 means you haven't rolled that dice yet.<br>
-        4. press the - button to delete the rightmost dice.<br>
-        5. Each time you take a dice from the center, press firmly to remove it from the device in the center
-        and add it to your own device.<br>
+        1. The values of the dice are all randomized, trust me.<br>
+        2. Click and hold on a specific dice to remove it from the list.<br>
+        3. Press the + button to add a new dice to the far right of the dice list. The number 0 means you haven't rolled that dice yet.<br>
+        4. Press the - button to delete the rightmost dice.<br>
+        5. Each time you take a dice from the center, remove it from the center device and add it to your own device.<br>
         <br>
         <p style="font-weight:700">When the curtain falls...</p>
-        1. roll the white and black dice... and then... well, you know what happens after that.
+        1. Roll the white and black dice... and then... well, you know what happens after that.
         There's no automatic summation. Go for it, use your brain!<br>
         <br>
-        <p style="font-weight:700">Remember: Don't close the tab while the game is in progress.
+        <p style="font-weight:700">Don't close the tab while the game is in progress.
             Refreshing or reopening the page will reset everything, including the number of dice.
             </p>
         <br>
@@ -175,7 +174,7 @@
         }
 
         function confirmRemoveDice(color, diceElement) {
-            if (confirm("Edit this Dice")) {
+            if (confirm("Dice value: " + diceElement.textContent + "\nRemove?")) {
                 removeDice(color, diceElement);
             }
         }
